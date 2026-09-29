@@ -150,15 +150,11 @@ a:focus-visible {
   font-size: 0.9rem;
 }
 
-/* Phones: 2x2 grid of four fits one screen, so the fifth pick is hidden. Account stacks tight under the title. */
+/* Phones: 2x2 grid of four fits one screen, so the fifth pick and the chrome around it are hidden. */
 @media (max-width: 600px) {
-  #head {
-    flex-direction: column;
-    margin-bottom: 1rem;
-  }
-
-  h1 {
-    margin: 0;
+  #who,
+  #status.idle {
+    display: none;
   }
 
   #albums {

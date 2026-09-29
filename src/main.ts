@@ -30,7 +30,11 @@ const $ = (id: string) => {
   if (!el) throw new Error(`Missing #${id}`);
   return el;
 };
-const setStatus = (msg: string) => ($("status").textContent = msg);
+// `idle` marks the "N liked albums" line, which phones hide; loading and errors always show.
+const setStatus = (msg: string, idle = false) => {
+  $("status").textContent = msg;
+  $("status").classList.toggle("idle", idle);
+};
 
 const b64url = (bytes: ArrayBuffer | Uint8Array) =>
   btoa(String.fromCharCode(...new Uint8Array(bytes)))
@@ -171,7 +175,7 @@ async function main() {
   let albums = loadCache() ?? saveCache(await fetchAllAlbums(token));
 
   const show = () => {
-    setStatus(albums.length ? `${albums.length} liked albums. Pick one:` : "No liked albums.");
+    setStatus(albums.length ? `${albums.length} liked albums. Pick one:` : "No liked albums.", albums.length > 0);
     render(albums);
   };
 
