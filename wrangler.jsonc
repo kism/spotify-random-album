@@ -2,5 +2,6 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "spotify-random-album",
   "compatibility_date": "2026-09-26",
+  // Static site: Cloudflare Pages Git integration builds with `npm run build` and serves this dir.
   "pages_build_output_dir": "public"
 }
