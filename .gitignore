@@ -1,0 +1,4 @@
+node_modules/
+public/main.js
+.wrangler/
+public/fonts/
