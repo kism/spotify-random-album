@@ -149,3 +149,24 @@ a:focus-visible {
   color: var(--muted);
   font-size: 0.9rem;
 }
+
+/* Phones: 2x2 grid of four fits one screen, so the fifth pick is hidden. Account stacks tight under the title. */
+@media (max-width: 600px) {
+  #head {
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  #albums {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  #albums li:nth-child(n + 5) {
+    display: none;
+  }
+}
