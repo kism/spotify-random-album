@@ -40,6 +40,17 @@ h1 {
   color: var(--muted);
 }
 
+#controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+#logout {
+  margin-left: auto;
+  --accent: var(--muted);
+}
+
 button {
   font: inherit;
   padding: 0.5rem 1.25rem;

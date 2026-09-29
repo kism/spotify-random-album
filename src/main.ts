@@ -20,6 +20,7 @@ interface SpotifyAlbum {
 }
 
 const CACHE_KEY = "albums";
+const REFRESH_KEY = "refresh";
 const MAX_AGE = 24 * 60 * 60 * 1000;
 
 const $ = (id: string) => {
@@ -51,28 +52,42 @@ async function login() {
     });
 }
 
-// ponytail: token lives in sessionStorage, no refresh — expires after 1h, just log in again.
+// Access token lives in sessionStorage (1h); the refresh token in localStorage, so reopening the
+// site gets a new one silently instead of bouncing through the authorize redirect again.
+async function tokenRequest(body: Record<string, string>): Promise<string> {
+  const res = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    body: new URLSearchParams({ client_id: CLIENT_ID, ...body }),
+  });
+  if (!res.ok) throw new Error(`Token request failed: ${await res.text()}`);
+  const { access_token, expires_in, refresh_token } = await res.json();
+  sessionStorage.setItem("token", access_token);
+  sessionStorage.setItem("expires", String(Date.now() + expires_in * 1000));
+  if (refresh_token) localStorage.setItem(REFRESH_KEY, refresh_token);
+  return access_token;
+}
+
 async function getToken(): Promise<string | null> {
   const code = new URLSearchParams(location.search).get("code");
   if (code) {
     history.replaceState(null, "", REDIRECT_URI);
-    const res = await fetch("https://accounts.spotify.com/api/token", {
-      method: "POST",
-      body: new URLSearchParams({
-        client_id: CLIENT_ID,
-        grant_type: "authorization_code",
-        code,
-        redirect_uri: REDIRECT_URI,
-        code_verifier: sessionStorage.getItem("verifier") ?? "",
-      }),
+    return tokenRequest({
+      grant_type: "authorization_code",
+      code,
+      redirect_uri: REDIRECT_URI,
+      code_verifier: sessionStorage.getItem("verifier") ?? "",
     });
-    if (!res.ok) throw new Error(`Token exchange failed: ${await res.text()}`);
-    const { access_token, expires_in } = await res.json();
-    sessionStorage.setItem("token", access_token);
-    sessionStorage.setItem("expires", String(Date.now() + expires_in * 1000));
   }
+
   const token = sessionStorage.getItem("token");
-  return token && Date.now() < Number(sessionStorage.getItem("expires")) ? token : null;
+  if (token && Date.now() < Number(sessionStorage.getItem("expires"))) return token;
+
+  const refresh = localStorage.getItem(REFRESH_KEY);
+  if (!refresh) return null;
+  return tokenRequest({ grant_type: "refresh_token", refresh_token: refresh }).catch(() => {
+    localStorage.removeItem(REFRESH_KEY); // revoked or expired — fall back to the login button
+    return null;
+  });
 }
 
 function loadCache(): Album[] | null {
@@ -160,6 +175,12 @@ async function main() {
 
   $("reroll").hidden = false;
   $("refresh").hidden = false;
+  $("logout").hidden = false;
+  $("logout").onclick = () => {
+    localStorage.clear(); // refresh token + album cache
+    sessionStorage.clear();
+    location.reload();
+  };
   $("reroll").onclick = () => render(albums);
   $("refresh").onclick = () => {
     setStatus("Refreshing…");

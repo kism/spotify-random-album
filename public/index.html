@@ -16,9 +16,12 @@
   </head>
   <body>
     <h1>Spotify Random Album</h1>
-    <button type="button" id="login" hidden>Log in with Spotify</button>
-    <button type="button" id="reroll" hidden>Pick 5 more</button>
-    <button type="button" id="refresh" hidden>Refresh albums</button>
+    <div id="controls">
+      <button type="button" id="login" hidden>Log in with Spotify</button>
+      <button type="button" id="reroll" hidden>Pick 5 more</button>
+      <button type="button" id="refresh" hidden>Refresh albums</button>
+      <button type="button" id="logout" hidden>Switch Spotify account</button>
+    </div>
     <p id="status"></p>
     <ul id="albums"></ul>
     <script type="module" src="main.js"></script>
