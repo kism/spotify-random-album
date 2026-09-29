@@ -4,13 +4,23 @@ const CLIENT_ID = "ad62d4a193134bd983d392c0c291ea92";
 const REDIRECT_URI = location.origin + location.pathname;
 const SCOPES = "user-library-read";
 
+// Slimmed down from the Spotify album object so the whole library fits in localStorage.
 interface Album {
+  name: string;
+  artists: string;
+  image: string;
+  uri: string;
+}
+
+interface SpotifyAlbum {
   name: string;
   artists: { name: string }[];
   images: { url: string }[];
-  external_urls: { spotify: string };
   uri: string;
 }
+
+const CACHE_KEY = "albums";
+const MAX_AGE = 24 * 60 * 60 * 1000;
 
 const $ = (id: string) => {
   const el = document.getElementById(id);
@@ -65,14 +75,39 @@ async function getToken(): Promise<string | null> {
   return token && Date.now() < Number(sessionStorage.getItem("expires")) ? token : null;
 }
 
+function loadCache(): Album[] | null {
+  try {
+    const { at, albums } = JSON.parse(localStorage.getItem(CACHE_KEY) ?? "null") ?? {};
+    return albums && Date.now() - at < MAX_AGE ? albums : null;
+  } catch {
+    return null; // corrupt cache, just refetch
+  }
+}
+
+function saveCache(albums: Album[]): Album[] {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), albums }));
+  } catch {
+    // ponytail: quota or private mode — the cache is an optimisation, not a requirement
+  }
+  return albums;
+}
+
 async function fetchAllAlbums(token: string): Promise<Album[]> {
   const albums: Album[] = [];
   let url: string | null = "https://api.spotify.com/v1/me/albums?limit=50";
   while (url) {
     const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) throw new Error(`Spotify API ${res.status}: ${await res.text()}`);
-    const page: { items: { album: Album }[]; next: string | null; total: number } = await res.json();
-    albums.push(...page.items.map((i) => i.album));
+    const page: { items: { album: SpotifyAlbum }[]; next: string | null; total: number } = await res.json();
+    albums.push(
+      ...page.items.map(({ album }) => ({
+        name: album.name,
+        artists: album.artists.map((a) => a.name).join(", "),
+        image: album.images[0]?.url ?? "",
+        uri: album.uri,
+      })),
+    );
     setStatus(`Loading liked albums… ${albums.length}/${page.total}`);
     url = page.next;
   }
@@ -96,12 +131,12 @@ function render(albums: Album[]) {
       a.href = album.uri; // opens the Spotify app; external_urls.spotify for web player
       a.title = "Play in Spotify";
       const img = document.createElement("img");
-      img.src = album.images[0]?.url ?? "";
+      img.src = album.image;
       img.alt = "";
       const name = document.createElement("strong");
       name.textContent = album.name;
       const artists = document.createElement("span");
-      artists.textContent = album.artists.map((x) => x.name).join(", ");
+      artists.textContent = album.artists;
       a.append(img, name, artists);
       li.append(a);
       return li;
@@ -116,12 +151,26 @@ async function main() {
     $("login").hidden = false;
     return;
   }
-  const albums = await fetchAllAlbums(token);
-  setStatus(`${albums.length} liked albums. Pick one:`);
-  if (!albums.length) return;
+  let albums = loadCache() ?? saveCache(await fetchAllAlbums(token));
+
+  const show = () => {
+    setStatus(albums.length ? `${albums.length} liked albums. Pick one:` : "No liked albums.");
+    render(albums);
+  };
+
   $("reroll").hidden = false;
+  $("refresh").hidden = false;
   $("reroll").onclick = () => render(albums);
-  render(albums);
+  $("refresh").onclick = () => {
+    setStatus("Refreshing…");
+    fetchAllAlbums(token)
+      .then((fresh) => {
+        albums = saveCache(fresh);
+        show();
+      })
+      .catch((e) => setStatus(String(e)));
+  };
+  show();
 }
 
 main().catch((e) => setStatus(String(e)));
