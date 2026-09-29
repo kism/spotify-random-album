@@ -17,12 +17,15 @@
   <body>
     <div id="head">
       <h1>Random Spotify Album</h1>
-      <p id="who"></p>
+      <p id="who" hidden>
+        <span id="user"></span>
+        <button type="button" id="refresh">Refresh albums</button>
+        <button type="button" id="logout">Switch user</button>
+      </p>
     </div>
     <div id="controls">
       <button type="button" id="login" hidden>Log in with Spotify</button>
       <button type="button" id="reroll" hidden>Pick more</button>
-      <button type="button" id="refresh" hidden>Refresh albums</button>
     </div>
     <p id="status"></p>
     <ul id="albums"></ul>

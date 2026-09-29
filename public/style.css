@@ -38,7 +38,7 @@ body {
 }
 
 h1 {
-  margin: 0 0 1rem;
+  margin: 0;
   color: var(--accent);
 }
 
@@ -47,35 +47,26 @@ h1 {
   color: var(--muted);
 }
 
-/* Title row: the account sits flush right, on the title's baseline. Wraps under it if cramped. */
 #head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0 1rem;
+  margin-bottom: 1rem;
 }
 
+/* Account line tight under the title: name, then the secondary actions as plain text links. */
 #who {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
   margin: 0;
+}
+
+#who[hidden] {
+  display: none;
 }
 
 #controls {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-/* Secondary actions: outlined rather than filled, so the primary buttons stay the loud ones. */
-#refresh {
-  --btn: var(--muted);
-  background: transparent;
-  color: var(--btn);
-}
-
-#refresh:hover {
-  background: var(--btn);
-  color: var(--bg);
 }
 
 button {
@@ -112,6 +103,22 @@ button:focus-visible {
 a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
+}
+
+#who button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-decoration: underline;
+}
+
+#who button:hover {
+  color: var(--accent);
+}
+
+#who button:focus-visible {
+  outline-color: var(--accent);
 }
 
 #albums {
@@ -152,7 +159,7 @@ a:focus-visible {
 
 /* Phones: 2x2 grid of four fits one screen, so the fifth pick and the chrome around it are hidden. */
 @media (max-width: 600px) {
-  #who,
+  #user,
   #status.idle {
     display: none;
   }

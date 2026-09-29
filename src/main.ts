@@ -180,12 +180,17 @@ async function main() {
   };
 
   $("reroll").hidden = false;
-  $("refresh").hidden = false;
-  // display_name is public profile data, so no extra scope needed. Cosmetic: on failure the line
+  $("who").hidden = false;
+  $("logout").onclick = () => {
+    localStorage.clear(); // refresh token + album cache
+    sessionStorage.clear();
+    location.reload();
+  };
+  // display_name is public profile data, so no extra scope needed. Cosmetic: on failure the name
   // just stays empty.
   fetch("https://api.spotify.com/v1/me", { headers: { Authorization: `Bearer ${token}` } })
     .then((r) => r.json())
-    .then((me) => ($("who").textContent = `Logged in as ${me.display_name || me.id}`))
+    .then((me) => ($("user").textContent = `Logged in as ${me.display_name || me.id}`))
     .catch(() => {});
   $("reroll").onclick = () => render(albums);
   $("refresh").onclick = () => {
