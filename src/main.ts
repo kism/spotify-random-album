@@ -1,7 +1,9 @@
 // Spotify app client ID (public, not a secret). Create at https://developer.spotify.com/dashboard
 // and add this page's URL (e.g. https://<project>.pages.dev/ and http://127.0.0.1:8788/) as a redirect URI.
 const CLIENT_ID = "ad62d4a193134bd983d392c0c291ea92";
-const REDIRECT_URI = location.origin + location.pathname;
+// Must match the dashboard entry byte-for-byte, so pin it to the site root rather than whatever
+// path the browser happens to be on (/index.html, a trailing-slash-less URL, ...).
+const REDIRECT_URI = location.origin + "/";
 const SCOPES = "user-library-read";
 
 // Slimmed down from the Spotify album object so the whole library fits in localStorage.

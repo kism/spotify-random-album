@@ -54,7 +54,20 @@ h1 {
 
 #logout {
   margin-left: auto;
+}
+
+/* Secondary actions: outlined rather than filled, so the primary buttons stay the loud ones. */
+#refresh,
+#logout {
   --btn: var(--muted);
+  background: transparent;
+  color: var(--btn);
+}
+
+#refresh:hover,
+#logout:hover {
+  background: var(--btn);
+  color: var(--bg);
 }
 
 button {
