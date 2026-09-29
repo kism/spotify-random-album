@@ -42,8 +42,22 @@ h1 {
   color: var(--accent);
 }
 
-#status {
+#status,
+#who {
   color: var(--muted);
+}
+
+/* Title row: the account sits flush right, on the title's baseline. Wraps under it if cramped. */
+#head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 1rem;
+}
+
+#who {
+  margin: 0;
 }
 
 #controls {
@@ -52,20 +66,14 @@ h1 {
   gap: 0.5rem;
 }
 
-#logout {
-  margin-left: auto;
-}
-
 /* Secondary actions: outlined rather than filled, so the primary buttons stay the loud ones. */
-#refresh,
-#logout {
+#refresh {
   --btn: var(--muted);
   background: transparent;
   color: var(--btn);
 }
 
-#refresh:hover,
-#logout:hover {
+#refresh:hover {
   background: var(--btn);
   color: var(--bg);
 }

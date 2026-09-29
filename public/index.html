@@ -15,12 +15,14 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <h1>Random Spotify Album</h1>
+    <div id="head">
+      <h1>Random Spotify Album</h1>
+      <p id="who"></p>
+    </div>
     <div id="controls">
       <button type="button" id="login" hidden>Log in with Spotify</button>
       <button type="button" id="reroll" hidden>Pick 5 more</button>
       <button type="button" id="refresh" hidden>Refresh albums</button>
-      <button type="button" id="logout" hidden>Switch Spotify account</button>
     </div>
     <p id="status"></p>
     <ul id="albums"></ul>
