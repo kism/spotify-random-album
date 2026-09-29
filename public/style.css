@@ -4,6 +4,7 @@
   --muted: #666;
   --line: #ddd;
   --accent: #8b0000;
+  --btn: var(--accent);
   color-scheme: light dark;
 }
 
@@ -14,6 +15,11 @@
     --muted: #999;
     --line: #333;
     --accent: #ff6b6b;
+    --btn: #cd5699;
+  }
+
+  #login {
+    --btn: #56cc56;
   }
 }
 
@@ -48,36 +54,40 @@ h1 {
 
 #logout {
   margin-left: auto;
-  --accent: var(--muted);
+  --btn: var(--muted);
 }
 
 button {
   font: inherit;
   padding: 0.5rem 1.25rem;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--btn);
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--btn);
   color: var(--bg);
   cursor: pointer;
 }
 
 button:hover {
   background: transparent;
-  color: var(--accent);
+  color: var(--btn);
 }
 
 #login {
-  --accent: #1ed760;
+  --btn: #1ed760;
   color: #000;
 }
 
 #login:hover {
-  background: var(--accent);
+  background: var(--btn);
   color: #000;
   filter: brightness(1.1);
 }
 
-button:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--btn);
+  outline-offset: 3px;
+}
+
 a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
