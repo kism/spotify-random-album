@@ -17,10 +17,6 @@
     --accent: #ff6b6b;
     --btn: #cd5699;
   }
-
-  #login {
-    --btn: #56cc56;
-  }
 }
 
 * {
