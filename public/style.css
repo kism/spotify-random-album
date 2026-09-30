@@ -160,7 +160,7 @@ a:focus-visible {
 /* Phones: 2x2 grid of four fits one screen, so the fifth pick and the chrome around it are hidden. */
 @media (max-width: 600px) {
   #user,
-  #status.idle {
+  #count {
     display: none;
   }
 
@@ -172,4 +172,8 @@ a:focus-visible {
   #albums li:nth-child(n + 5) {
     display: none;
   }
+}
+
+#status:empty {
+  display: none;
 }
