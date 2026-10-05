@@ -7,7 +7,8 @@
   },
   "scripts": {
     "build": "tsc && mkdir -p public/fonts && cp -r node_modules/@fontsource/noticia-text/400.css node_modules/@fontsource/noticia-text/700.css node_modules/@fontsource/noticia-text/files public/fonts/",
-    "dev": "tsc && wrangler pages dev --port 8788 --ip 127.0.0.1",
+    "dev": "wrangler dev --port 8788 --ip 127.0.0.1",
+    "deploy": "wrangler deploy",
     "fix": "biome check --write"
   },
   "devDependencies": {
