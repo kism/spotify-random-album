@@ -17,16 +17,16 @@
   <body>
     <div id="head">
       <h1>Random Spotify Album</h1>
+      <div id="controls">
+        <button type="button" id="login" hidden>Log in with Spotify</button>
+        <button type="button" id="reroll" hidden>Pick more</button>
+      </div>
       <p id="who" hidden>
         <span id="user"></span>
         <span id="count"></span>
         <button type="button" id="refresh">Refresh albums</button>
         <button type="button" id="logout">Switch user</button>
       </p>
-    </div>
-    <div id="controls">
-      <button type="button" id="login" hidden>Log in with Spotify</button>
-      <button type="button" id="reroll" hidden>Pick more</button>
     </div>
     <p id="status"></p>
     <ul id="albums"></ul>

@@ -34,6 +34,7 @@ body {
 }
 
 h1 {
+  flex-basis: 100%;
   margin: 0;
   color: var(--accent);
 }
@@ -43,11 +44,15 @@ h1 {
   color: var(--muted);
 }
 
+/* Title on its own line, then Pick more and the account line (name, secondary actions as plain text links) share a row. */
 #head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
   margin-bottom: 1rem;
 }
 
-/* Account line tight under the title: name, then the secondary actions as plain text links. */
 #who {
   display: flex;
   flex-wrap: wrap;
@@ -155,32 +160,8 @@ a:focus-visible {
 
 /* Phones: 2x2 grid of four fits one screen, so the fifth pick and the chrome around it are hidden. */
 @media (max-width: 600px) {
-  /* Flatten #head/#who so Pick more, Refresh albums and Switch user share one row. */
   body {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem 1rem;
     padding: 0.75rem 1rem;
-  }
-
-  #head,
-  #who {
-    display: contents;
-  }
-
-  h1 {
-    order: -2;
-  }
-
-  #controls {
-    order: -1;
-  }
-
-  h1,
-  #status,
-  #albums {
-    flex-basis: 100%;
   }
 
   #user,
