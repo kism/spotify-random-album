@@ -8,5 +8,6 @@
   },
   "assets": {
     "directory": "./public"
-  }
+  },
+  "routes": [{ "pattern": "rsa.autist.network", "custom_domain": true }]
 }
