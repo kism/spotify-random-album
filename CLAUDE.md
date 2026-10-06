@@ -9,7 +9,7 @@ Static single-page site that shows 5 random albums from the user's Spotify liked
 - `npm run build`: runs `scripts/build.sh` (tsc, copy fonts, generate `public/index.html`). Wrangler also runs it before every `dev`/`deploy`.
 - `npm run dev`: local server at http://127.0.0.1:8788/ (this exact origin is registered as a Spotify redirect URI, so don't change the port or host).
 - `npm run deploy`: `wrangler deploy`.
-- `npx biome ci` to lint and check formatting; `npm run fix` applies fixes. CI runs `biome ci` and then `npm run build`.
+- `npm run lint` (`biome ci`) checks linting and formatting; `npm run fix` applies fixes. CI runs `npm run lint` and then `npm run build`.
 - There are no tests.
 
 ## Layout and build gotchas

@@ -9,12 +9,13 @@
     "build": "./scripts/build.sh",
     "dev": "wrangler dev --port 8788 --ip 127.0.0.1",
     "deploy": "wrangler deploy",
+    "lint": "biome ci",
     "fix": "biome check --write"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
     "typescript": "^7.0.2",
-    "wrangler": "^4.101.0"
+    "wrangler": "^4.147.0"
   },
   "dependencies": {
     "@fontsource/noticia-text": "^5.3.0"
@@ -25,6 +26,6 @@
     "miniflare@5.20260926.0-alpha": true,
     "wrangler@4.143.0": true,
     "esbuild@0.28.1": true,
-    "workerd@1.20260926.1": true
+    "workerd@1.20261001.1": true
   }
 }
