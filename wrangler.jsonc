@@ -2,5 +2,12 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "spotify-random-album",
   "compatibility_date": "2026-09-26",
-  "pages_build_output_dir": "public"
+  // Runs before every deploy/dev
+  "build": {
+    "command": "npm run build"
+  },
+  "assets": {
+    "directory": "./public"
+  },
+  "routes": [{ "pattern": "rsa.autist.network", "custom_domain": true }]
 }

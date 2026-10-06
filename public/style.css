@@ -4,6 +4,7 @@
   --muted: #666;
   --line: #ddd;
   --accent: #8b0000;
+  --btn: var(--accent);
   color-scheme: light dark;
 }
 
@@ -14,6 +15,7 @@
     --muted: #999;
     --line: #333;
     --accent: #ff6b6b;
+    --btn: #cd5699;
   }
 }
 
@@ -32,44 +34,92 @@ body {
 }
 
 h1 {
-  margin: 0 0 1rem;
+  flex-basis: 100%;
+  margin: 0;
   color: var(--accent);
 }
 
-#status {
+#status,
+#who {
   color: var(--muted);
+}
+
+/* Title on its own line, then Pick more and the account line (name, secondary actions as plain text links) share a row. */
+#head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+#who {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  margin: 0;
+}
+
+#who[hidden] {
+  display: none;
+}
+
+#controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 button {
   font: inherit;
   padding: 0.5rem 1.25rem;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--btn);
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--btn);
   color: var(--bg);
   cursor: pointer;
 }
 
 button:hover {
   background: transparent;
-  color: var(--accent);
+  color: var(--btn);
 }
 
 #login {
-  --accent: #1ed760;
+  --btn: #1ed760;
   color: #000;
 }
 
 #login:hover {
-  background: var(--accent);
+  background: var(--btn);
   color: #000;
   filter: brightness(1.1);
 }
 
-button:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--btn);
+  outline-offset: 3px;
+}
+
 a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
+}
+
+#who button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-decoration: underline;
+}
+
+#who button:hover {
+  color: var(--accent);
+}
+
+#who button:focus-visible {
+  outline-color: var(--accent);
 }
 
 #albums {
@@ -106,4 +156,29 @@ a:focus-visible {
 #albums span {
   color: var(--muted);
   font-size: 0.9rem;
+}
+
+/* Phones: 2x2 grid of four fits one screen, so the fifth pick and the chrome around it are hidden. */
+@media (max-width: 600px) {
+  body {
+    padding: 0.75rem 1rem;
+  }
+
+  #user,
+  #count {
+    display: none;
+  }
+
+  #albums {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  #albums li:nth-child(n + 5) {
+    display: none;
+  }
+}
+
+#status:empty {
+  display: none;
 }
