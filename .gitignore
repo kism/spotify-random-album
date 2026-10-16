@@ -1,5 +1,4 @@
 node_modules/
-public/main.js
+dist/
 .wrangler/
-public/fonts/
-public/index.html
+.env

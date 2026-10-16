@@ -2,28 +2,33 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Static single-page site that shows 5 random albums from the user's Spotify liked albums. No backend: it's deployed as a Cloudflare Workers static-assets site (`wrangler.jsonc`, `assets.directory: ./public`), and everything runs in the browser.
+Static single-page site that shows 5 random albums from the user's Spotify liked albums. No backend: Vite builds it and
+the Cloudflare Vite plugin turns it into an assets-only Worker (`wrangler.jsonc` has no `main` or `assets`). Everything
+runs in the browser. Built from `kism/cloudflare-page-template`, so keep it in line with that.
 
 ## Commands
 
-- `npm run build`: runs `scripts/build.sh` (tsc, copy fonts, generate `public/index.html`). Wrangler also runs it before every `dev`/`deploy`.
-- `npm run dev`: local server at http://127.0.0.1:8788/ (this exact origin is registered as a Spotify redirect URI, so don't change the port or host).
-- `npm run deploy`: `wrangler deploy`.
-- `npm run lint` (`biome ci`) checks linting and formatting; `npm run fix` applies fixes. CI runs `npm run lint` and then `npm run build`.
+pnpm, not npm. See README_dev.md for the full list.
+
+- `pnpm dev`: Vite dev server at http://127.0.0.1:8788/ (this exact origin is a registered Spotify redirect URI, pinned
+  in `vite.config.ts`, so don't change the port or host).
+- `pnpm lint` / `pnpm format`: Biome. `pnpm typecheck`: tsc (noEmit).
+- `pnpm build`: `scripts/build.sh` (tsc, then `vite build` into `dist/`).
+- `scripts/run-ci-local.sh` runs everything CI does.
 - There are no tests.
 
 ## Layout and build gotchas
 
-- Edit sources in `src/`, not `public/`. These files in `public/` are build output and gitignored:
-  - `public/main.js`: compiled from `src/main.ts` by tsc, with `outDir: public`
-  - `public/index.html`: generated from `src/index.html`
-  - `public/fonts/`: copied from `@fontsource/noticia-text`
-- `public/style.css` and the icon/manifest files in `public/` are hand-edited sources.
-- `scripts/build.sh` replaces the `<!-- source -->` placeholder in `src/index.html` with the git remote URL and HEAD sha. It strips credentials from the remote URL, so keep that step if you change the script.
-- Plain tsc with no bundler. `main.js` is loaded as a single ES module, so keep the code in one file or use relative `.js` imports.
+- `index.html` is at the root (Vite entry). Sources are in `src/`; `public/` holds icons and the manifest, copied as is.
+- `dist/` is build output and gitignored.
+- `scripts/build.sh` sets `VITE_SOURCE` (git remote URL and HEAD sha) for the `<!-- %VITE_SOURCE% -->` comment. It
+  strips credentials from the remote URL, so keep that step if you change the script.
+- `VITE_FAVICON` comes from `.env.development` / `.env.production` (red dev icon locally).
+- Fonts come from `@fontsource/noticia-text`, imported in `src/style.css` and bundled by Vite.
 
-## Architecture (`src/main.ts`)
+## Architecture
 
+- Everything is in `src/main.ts`.
 - **Auth:** Spotify OAuth Authorization Code + PKCE, with no client secret.
   - `CLIENT_ID` is public.
   - `REDIRECT_URI` is pinned to `location.origin + "/"` and must match the Spotify dashboard entry exactly.

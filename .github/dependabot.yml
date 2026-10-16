@@ -1,10 +1,20 @@
+---
 version: 2
 updates:
-  - package-ecosystem: npm
-    directory: /
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: quarterly
-  - package-ecosystem: github-actions
-    directory: /
+      interval: "quarterly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: quarterly
+      interval: "quarterly"
+    groups:
+      npm:
+        patterns:
+          - "*"

@@ -1,19 +1,17 @@
 <!doctype html>
 <html lang="en">
+  <!-- %VITE_SOURCE% -->
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
     <title>Random Spotify Album</title>
-    <!-- source -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Icon: Twemoji 1f3b6 (c) Twitter, Inc and contributors, CC-BY 4.0 -->
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="stylesheet" href="fonts/400.css">
-    <link rel="stylesheet" href="fonts/700.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="%VITE_FAVICON%" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <script type="module" src="/src/main.ts"></script>
   </head>
   <body>
     <div id="head">
@@ -31,6 +29,5 @@
     </div>
     <p id="status"></p>
     <ul id="albums"></ul>
-    <script type="module" src="main.js"></script>
   </body>
 </html>
